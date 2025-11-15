@@ -1,0 +1,1 @@
+"""VentriChat Backend Application"""
