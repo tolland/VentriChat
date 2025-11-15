@@ -41,9 +41,12 @@ VentriChat explores the fascinating concept of miscommunication through AI. When
 
 - Python 3.9+
 - Node.js 18+
+- [uv](https://github.com/astral-sh/uv) (recommended) or pip
 - npm or yarn
 
 ### Installation
+
+#### Modern Setup (Recommended - using uv and hatch)
 
 1. **Clone the repository**
 ```bash
@@ -51,16 +54,37 @@ git clone <repository-url>
 cd VentriChat
 ```
 
-2. **Set up the backend**
+2. **Install uv** (if not already installed)
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+3. **Set up the backend**
 ```bash
 cd backend
+uv sync
+cp .env.example .env
+```
+
+4. **Set up the frontend**
+```bash
+cd ../frontend
+npm install
+```
+
+#### Traditional Setup (alternative)
+
+1. **Clone and set up backend**
+```bash
+git clone <repository-url>
+cd VentriChat/backend
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
 ```
 
-3. **Set up the frontend**
+2. **Set up frontend**
 ```bash
 cd ../frontend
 npm install
@@ -68,7 +92,21 @@ npm install
 
 ### Running the Application
 
-**Option 1: Run separately (recommended for development)**
+#### With Modern Tools (Recommended)
+
+Terminal 1 - Backend:
+```bash
+cd backend
+hatch run dev
+```
+
+Terminal 2 - Frontend:
+```bash
+cd frontend
+npm run dev
+```
+
+#### Traditional Method
 
 Terminal 1 - Backend:
 ```bash
@@ -83,9 +121,9 @@ cd frontend
 npm run dev
 ```
 
-**Option 2: Quick start script**
+#### Quick Start Script
+
 ```bash
-# Create a simple start script
 chmod +x start.sh
 ./start.sh
 ```

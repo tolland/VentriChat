@@ -4,6 +4,21 @@ FastAPI backend with WebSocket support and AI message distortion.
 
 ## Setup
 
+### Using uv and hatch (Recommended)
+
+```bash
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies with uv
+uv sync
+
+# Configure environment
+cp .env.example .env
+```
+
+### Traditional setup (alternative)
+
 ```bash
 # Create virtual environment
 python -m venv venv
@@ -17,6 +32,18 @@ cp .env.example .env
 ```
 
 ## Running
+
+### With hatch (Recommended)
+
+```bash
+# Development mode with auto-reload
+hatch run dev
+
+# Production mode
+hatch run start
+```
+
+### Traditional method
 
 ```bash
 python main.py
@@ -37,6 +64,23 @@ Once running, visit:
 - `OLLAMA_BASE_URL` - Ollama API URL (default: http://localhost:11434)
 - `USE_MOCK_AI` - Use mock AI responses (default: true)
 
+## Development Commands
+
+With hatch:
+```bash
+# Run development server with auto-reload
+hatch run dev
+
+# Run tests
+hatch run test
+
+# Check code formatting and linting
+hatch run lint:check
+
+# Auto-format code
+hatch run lint:format
+```
+
 ## Architecture
 
 - `main.py` - FastAPI application and WebSocket endpoint
@@ -45,3 +89,4 @@ Once running, visit:
 - `app/distortion_modes.py` - Configuration for distortion modes
 - `app/routes/chat.py` - Chat-related REST endpoints
 - `app/routes/mock_ollama.py` - Mock Ollama API for development
+- `pyproject.toml` - Project configuration and dependencies (hatch/uv)
