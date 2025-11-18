@@ -55,6 +55,10 @@ cd VentriChat
 ```
 
 2. **Install uv** (if not already installed)
+
+Follow the instructions at: https://github.com/astral-sh/uv#installation
+
+Or use the quick install (review the script first):
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```

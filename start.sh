@@ -11,7 +11,7 @@ if command -v uv &> /dev/null && command -v hatch &> /dev/null; then
     echo "✨ Using modern tools (uv + hatch)"
 else
     echo "Using traditional tools (venv + pip)"
-    echo "💡 Tip: Install uv for faster setup: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    echo "💡 Tip: Install uv for faster setup: https://github.com/astral-sh/uv#installation"
 fi
 
 # Setup backend

@@ -7,8 +7,8 @@ FastAPI backend with WebSocket support and AI message distortion.
 ### Using uv and hatch (Recommended)
 
 ```bash
-# Install uv (if not already installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# Install uv first if not already installed
+# See: https://github.com/astral-sh/uv#installation
 
 # Install dependencies with uv
 uv sync
