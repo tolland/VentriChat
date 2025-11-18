@@ -115,17 +115,22 @@ class AIService:
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(
-                    f"{self.ollama_base_url}/api/generate",
+                    f"{self.ollama_base_url}/api/chat",
                     json={
                         "model": self.model,
-                        "prompt": prompt,
+                        "messages": [
+                            {
+                                "role": "user",
+                                "content": prompt
+                            }
+                        ],
                         "stream": False
                     },
                     timeout=aiohttp.ClientTimeout(total=10)
                 ) as response:
                     if response.status == 200:
                         result = await response.json()
-                        return result.get("response", original)
+                        return result.get("message", {}).get("content", original)
                     else:
                         logger.error(f"Ollama API error: {response.status}")
                         return self._mock_distort(original, mode)
