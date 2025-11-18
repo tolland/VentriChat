@@ -2,16 +2,20 @@
 
 Svelte + TypeScript frontend with real-time WebSocket chat.
 
+## Prerequisites
+
+- [pnpm](https://pnpm.io/) - Fast, disk space efficient package manager
+
 ## Setup
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Development
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Open `http://localhost:5173` in your browser.
@@ -19,7 +23,7 @@ Open `http://localhost:5173` in your browser.
 ## Build
 
 ```bash
-npm run build
+pnpm build
 ```
 
 The built files will be in the `dist/` directory.
@@ -27,13 +31,13 @@ The built files will be in the `dist/` directory.
 ## Preview Production Build
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 ## Type Checking
 
 ```bash
-npm run check
+pnpm check
 ```
 
 ## Project Structure

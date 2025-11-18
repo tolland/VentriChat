@@ -2,56 +2,74 @@
 
 # VentriChat Quick Start Script
 
+set -e  # Exit on error
+
 echo "🎭 Starting VentriChat..."
 
-# Check for uv and hatch
-USE_MODERN_TOOLS=false
-if command -v uv &> /dev/null && command -v hatch &> /dev/null; then
-    USE_MODERN_TOOLS=true
-    echo "✨ Using modern tools (uv + hatch)"
-else
-    echo "Using traditional tools (venv + pip)"
-    echo "💡 Tip: Install uv for faster setup: https://github.com/astral-sh/uv#installation"
+# Check for required tools
+MISSING_TOOLS=()
+
+if ! command -v uv &> /dev/null; then
+    MISSING_TOOLS+=("uv")
 fi
+
+if ! command -v hatch &> /dev/null; then
+    MISSING_TOOLS+=("hatch")
+fi
+
+if ! command -v pnpm &> /dev/null; then
+    MISSING_TOOLS+=("pnpm")
+fi
+
+if [ ${#MISSING_TOOLS[@]} -ne 0 ]; then
+    echo "❌ Missing required tools: ${MISSING_TOOLS[*]}"
+    echo ""
+    echo "Please install the following:"
+    for tool in "${MISSING_TOOLS[@]}"; do
+        case $tool in
+            uv)
+                echo "  - uv: https://github.com/astral-sh/uv#installation"
+                ;;
+            hatch)
+                echo "  - hatch: pipx install hatch"
+                ;;
+            pnpm)
+                echo "  - pnpm: https://pnpm.io/installation"
+                ;;
+        esac
+    done
+    exit 1
+fi
+
+echo "✨ All required tools found"
 
 # Setup backend
-if [ "$USE_MODERN_TOOLS" = true ]; then
-    if [ ! -f "backend/.venv/bin/activate" ] && [ ! -f "backend/pyproject.toml" ]; then
-        echo "Installing backend dependencies with uv..."
-        cd backend
-        uv sync
-        cd ..
-    fi
-else
-    if [ ! -d "backend/venv" ]; then
-        echo "Creating Python virtual environment..."
-        cd backend
-        python3 -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
-        cd ..
-    fi
+if [ ! -d "backend/.venv" ]; then
+    echo "Installing backend dependencies..."
+    cd backend
+    uv sync
+    cd ..
 fi
 
-# Check if node_modules exists
+# Setup frontend
 if [ ! -d "frontend/node_modules" ]; then
     echo "Installing frontend dependencies..."
     cd frontend
-    npm install
+    pnpm install
     cd ..
+fi
+
+# Copy .env if it doesn't exist
+if [ ! -f "backend/.env" ]; then
+    echo "Creating .env file..."
+    cp backend/.env.example backend/.env
 fi
 
 # Start backend in background
 echo "Starting backend server..."
 cd backend
-if [ "$USE_MODERN_TOOLS" = true ]; then
-    hatch run dev &
-    BACKEND_PID=$!
-else
-    source venv/bin/activate
-    python main.py &
-    BACKEND_PID=$!
-fi
+hatch run dev &
+BACKEND_PID=$!
 cd ..
 
 # Wait for backend to start
@@ -60,7 +78,7 @@ sleep 3
 # Start frontend
 echo "Starting frontend dev server..."
 cd frontend
-npm run dev &
+pnpm dev &
 FRONTEND_PID=$!
 cd ..
 

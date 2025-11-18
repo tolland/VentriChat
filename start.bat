@@ -3,29 +3,56 @@ REM VentriChat Quick Start Script for Windows
 
 echo 🎭 Starting VentriChat...
 
-REM Check if virtual environment exists
-if not exist "backend\venv" (
-    echo Creating Python virtual environment...
+REM Check for required tools
+set MISSING_TOOLS=
+
+where uv >nul 2>nul
+if %ERRORLEVEL% NEQ 0 set MISSING_TOOLS=%MISSING_TOOLS% uv
+
+where hatch >nul 2>nul
+if %ERRORLEVEL% NEQ 0 set MISSING_TOOLS=%MISSING_TOOLS% hatch
+
+where pnpm >nul 2>nul
+if %ERRORLEVEL% NEQ 0 set MISSING_TOOLS=%MISSING_TOOLS% pnpm
+
+if NOT "%MISSING_TOOLS%"=="" (
+    echo ❌ Missing required tools:%MISSING_TOOLS%
+    echo.
+    echo Please install the following:
+    echo   - uv: https://github.com/astral-sh/uv#installation
+    echo   - hatch: pipx install hatch
+    echo   - pnpm: https://pnpm.io/installation
+    exit /b 1
+)
+
+echo ✨ All required tools found
+
+REM Setup backend
+if not exist "backend\.venv" (
+    echo Installing backend dependencies...
     cd backend
-    python -m venv venv
-    call venv\Scripts\activate
-    pip install -r requirements.txt
+    uv sync
     cd ..
 )
 
-REM Check if node_modules exists
+REM Setup frontend
 if not exist "frontend\node_modules" (
     echo Installing frontend dependencies...
     cd frontend
-    call npm install
+    pnpm install
     cd ..
+)
+
+REM Copy .env if it doesn't exist
+if not exist "backend\.env" (
+    echo Creating .env file...
+    copy backend\.env.example backend\.env
 )
 
 REM Start backend
 echo Starting backend server...
 cd backend
-call venv\Scripts\activate
-start /B python main.py
+start /B hatch run dev
 cd ..
 
 REM Wait for backend to start
@@ -34,7 +61,7 @@ timeout /t 3 /nobreak
 REM Start frontend
 echo Starting frontend dev server...
 cd frontend
-start /B npm run dev
+start /B pnpm dev
 cd ..
 
 echo.

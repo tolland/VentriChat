@@ -2,14 +2,14 @@
 
 FastAPI backend with WebSocket support and AI message distortion.
 
+## Prerequisites
+
+- [uv](https://github.com/astral-sh/uv) - Fast Python package installer
+- [hatch](https://hatch.pypa.io/) - Modern Python project manager (`pipx install hatch`)
+
 ## Setup
 
-### Using uv and hatch (Recommended)
-
 ```bash
-# Install uv first if not already installed
-# See: https://github.com/astral-sh/uv#installation
-
 # Install dependencies with uv
 uv sync
 
@@ -17,23 +17,7 @@ uv sync
 cp .env.example .env
 ```
 
-### Traditional setup (alternative)
-
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment
-cp .env.example .env
-```
-
 ## Running
-
-### With hatch (Recommended)
 
 ```bash
 # Development mode with auto-reload
@@ -41,12 +25,6 @@ hatch run dev
 
 # Production mode
 hatch run start
-```
-
-### Traditional method
-
-```bash
-python main.py
 ```
 
 The server will start on `http://localhost:8000`
@@ -66,7 +44,6 @@ Once running, visit:
 
 ## Development Commands
 
-With hatch:
 ```bash
 # Run development server with auto-reload
 hatch run dev

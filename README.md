@@ -30,8 +30,8 @@ VentriChat explores the fascinating concept of miscommunication through AI. When
 
 ## 🏗️ Tech Stack
 
-- **Frontend**: Svelte + TypeScript + Vite
-- **Backend**: Python FastAPI
+- **Frontend**: Svelte + TypeScript + Vite + pnpm
+- **Backend**: Python FastAPI + uv + hatch
 - **Transport**: WebSockets for real-time messaging
 - **AI**: Mock Ollama-compatible API (easily swappable with real models)
 
@@ -39,64 +39,44 @@ VentriChat explores the fascinating concept of miscommunication through AI. When
 
 ### Prerequisites
 
-- Python 3.9+
-- Node.js 18+
-- [uv](https://github.com/astral-sh/uv) (recommended) or pip
-- npm or yarn
+Install these modern tools:
+
+- **[uv](https://github.com/astral-sh/uv)** - Fast Python package installer
+- **[hatch](https://hatch.pypa.io/)** - Modern Python project manager
+  ```bash
+  pipx install hatch
+  ```
+- **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
 
 ### Installation
 
-#### Modern Setup (Recommended - using uv and hatch)
-
-1. **Clone the repository**
 ```bash
+# Clone the repository
 git clone <repository-url>
 cd VentriChat
-```
 
-2. **Install uv** (if not already installed)
-
-Follow the instructions at: https://github.com/astral-sh/uv#installation
-
-Or use the quick install (review the script first):
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-3. **Set up the backend**
-```bash
+# Backend setup
 cd backend
 uv sync
 cp .env.example .env
-```
+cd ..
 
-4. **Set up the frontend**
-```bash
-cd ../frontend
-npm install
-```
-
-#### Traditional Setup (alternative)
-
-1. **Clone and set up backend**
-```bash
-git clone <repository-url>
-cd VentriChat/backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env
-```
-
-2. **Set up frontend**
-```bash
-cd ../frontend
-npm install
+# Frontend setup
+cd frontend
+pnpm install
+cd ..
 ```
 
 ### Running the Application
 
-#### With Modern Tools (Recommended)
+**Option 1: Quick Start Script**
+
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+**Option 2: Run Manually**
 
 Terminal 1 - Backend:
 ```bash
@@ -107,29 +87,7 @@ hatch run dev
 Terminal 2 - Frontend:
 ```bash
 cd frontend
-npm run dev
-```
-
-#### Traditional Method
-
-Terminal 1 - Backend:
-```bash
-cd backend
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-python main.py
-```
-
-Terminal 2 - Frontend:
-```bash
-cd frontend
-npm run dev
-```
-
-#### Quick Start Script
-
-```bash
-chmod +x start.sh
-./start.sh
+pnpm dev
 ```
 
 Then open your browser to `http://localhost:5173`
@@ -180,7 +138,7 @@ VentriChat/
 │   │   ├── websocket_manager.py  # WebSocket handling
 │   │   └── distortion_modes.py   # Mode configurations
 │   ├── main.py             # FastAPI application
-│   └── requirements.txt
+│   └── pyproject.toml      # Python dependencies (uv/hatch)
 ├── frontend/               # Svelte + TypeScript frontend
 │   ├── src/
 │   │   ├── components/    # Svelte components
@@ -221,6 +179,37 @@ DISTORTION_MODES = {
 
 Then add the transformation logic in `backend/app/ai_service.py`.
 
+### Backend Commands
+
+```bash
+cd backend
+
+# Run development server
+hatch run dev
+
+# Run tests
+hatch run test
+
+# Format and lint
+hatch run lint:format
+hatch run lint:check
+```
+
+### Frontend Commands
+
+```bash
+cd frontend
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Type check
+pnpm check
+```
+
 ### API Endpoints
 
 - `GET /` - Health check
@@ -254,3 +243,5 @@ MIT License - Feel free to use, modify, and distribute.
 ---
 
 **Built with chaos, powered by AI, inspired by miscommunication.**
+
+*Uses modern Python tooling (uv + hatch) and pnpm for fast, reliable dependency management.*
